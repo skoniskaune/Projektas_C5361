@@ -4,6 +4,7 @@ Sukurkite duomenų produktą - analitinę aplikaciją, skirtą banko paskolos į
 
 <img src="practice/img/data_product.png" width="500"/>
 
+
 #### Projekte ugdomi gebėjimai
 
 -   analizuoti ir interpretuoti skaičiavimų rezultatus, įvertinti ar galima taikyti duomenų tyrybos metodą konkretiems duomenims ir jeigu ne, pasiūlyti kitą tinkamą metodą;\
