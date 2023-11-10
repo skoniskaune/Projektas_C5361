@@ -39,4 +39,5 @@ Help business to classify bad customers
 
 # Results
 
+
 * Random Forest proved to be the best model and reached AUC = 0.78 on training dataset
