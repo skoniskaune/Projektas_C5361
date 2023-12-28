@@ -15,7 +15,7 @@ ui <- dashboardPage(
 )
 server <- function(input, output) {
   
-  model <- h2o.loadModel("C:/Users/PCG/Desktop/Stuff new/mind/Magistras/Duomenu rinkiniu tyrybos metodai/4lab(projektas)/my_best_automlmodel")
+  model <- h2o.loadModel("../4-model/my_best_automlmodel")
   output$table <- renderTable({
     req(input$file)
     table <- read_csv(input$file$datapath) %>%
