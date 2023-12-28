@@ -16,7 +16,7 @@ ui <- fluidPage(
 )
 
 server <- function(input, output) {
-  model <- h2o.loadModel("../../4-model/rf_model1")
+  model <- h2o.loadModel("../../4-model/my_best_automlmodel")
   output$table <- renderTable({
     req(input$file)
     test_data <- h2o.importFile(input$file$datapath)
@@ -31,4 +31,3 @@ server <- function(input, output) {
   
 }
 shinyApp(ui = ui, server = server)
-
