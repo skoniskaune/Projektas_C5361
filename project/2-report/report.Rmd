@@ -1,34 +1,115 @@
 ---
-title: "test"
-author: "test"
-date: "10/3/2021"
+title: "Exploratory Analysis"
+author: "C5361"
+date: "28/12/2023"
 output:
   html_document:
     keep_md: true
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+Užkrauname reikalingas bibliotekas
+
+```{r message=FALSE, warning=FALSE}
+library(tidyverse)
+library(knitr)
 ```
 
-TEST
 
-## R Markdown
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
+```{r message=FALSE, warning=FALSE, cache=TRUE}
+df <- read_csv("../../../project/1-data/1-sample_data.csv")
 ```
 
-## Including Plots
+Duomenų failo dimensijos:
 
-You can also embed plots, for example:
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+```{r}
+dim(df)
+```
+# Kintamųjų apžvalga
+
+
+```{r}
+summary(df)
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+summary(df) %>%
+  kable()
+```
+
+
+# TO DO
+
+Apžvelgiamos NA reikšmės
+
+
+```{r}
+df$loan_purpose <- as.factor(df$loan_purpose)
+df$y <- as.factor(df$y)
+```
+
+
+```{r}
+summary(df$loan_purpose) %>%
+  kable()
+```
+
+
+
+```{r}
+df %>%
+  group_by(loan_purpose) %>%
+  summarise(n = n()) %>%
+  arrange(desc(n)) %>%
+  kable()
+```
+
+
+```{r message=FALSE, warning=FALSE}
+df %>%
+  group_by(y, loan_purpose) %>%
+  summarise(n = n()) %>%
+  ggplot(aes(fill=y, y=n, x=loan_purpose)) + 
+  geom_bar(position="dodge", stat="identity") + 
+  coord_flip() +
+  scale_y_continuous(labels = scales::comma) +
+  theme_dark()
+```
+
+Daugiausiai išduota paskolų šiems tikslams:
+
+```{r message=FALSE, warning=FALSE}
+df %>%
+  filter(y == 1) %>%
+  group_by(loan_purpose) %>%
+  summarise(n = n()) %>%
+  arrange(desc(n)) %>%
+  head(10) %>%
+  kable()
+```
+
+
+# Papildomi pasiūlymai interaktyvumui pagerinti
+
+Interaktyvios lentelės su datatable (DT)
+
+```{r message=FALSE, warning=FALSE}
+library(DT)
+df %>%
+  group_by(y, loan_purpose) %>%
+  summarise(n = n()) %>%
+  datatable()
+```
+
+Interaktyvūs grafikai su plotly
+
+```{r message=FALSE, warning=FALSE}
+library(plotly)
+df %>%
+  group_by(y, credit_score) %>%
+  summarise(n = n()) %>%
+  plot_ly(x = ~credit_score, y = ~n, name = ~y, type = "bar")
+```
+
+
